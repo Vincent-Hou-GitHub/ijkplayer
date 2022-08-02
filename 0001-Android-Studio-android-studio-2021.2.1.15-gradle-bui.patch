@@ -1,0 +1,330 @@
+From 0ff9db8d6a781a813313eace2ba3c0be1b8f1efa Mon Sep 17 00:00:00 2001
+From: houruiyang <houruiyang@lixiang.com>
+Date: Tue, 2 Aug 2022 17:32:03 +0800
+Subject: [PATCH] Android Studio android-studio-2021.2.1.15 gradle build
+
+---
+ android/ijkplayer/build.gradle                |  6 ++-
+ .../gradle/wrapper/gradle-wrapper.properties  | 12 +++---
+ .../ijkplayer/ijkplayer-arm64/build.gradle    |  2 +-
+ .../ijkplayer/ijkplayer-armv5/build.gradle    |  2 +-
+ .../ijkplayer/ijkplayer-armv7a/build.gradle   |  2 +-
+ .../ijkplayer/ijkplayer-example/build.gradle  | 40 ++++++++++---------
+ android/ijkplayer/ijkplayer-exo/build.gradle  |  6 +--
+ android/ijkplayer/ijkplayer-java/build.gradle |  2 +-
+ android/ijkplayer/ijkplayer-x86/build.gradle  |  2 +-
+ .../ijkplayer/ijkplayer-x86_64/build.gradle   |  2 +-
+ config/module-default.sh                      | 16 ++++++--
+ config/module.sh                              |  2 +-
+ init-android-openssl.sh                       |  2 +-
+ init-android.sh                               |  2 +-
+ 14 files changed, 57 insertions(+), 41 deletions(-)
+ mode change 100644 => 100755 android/ijkplayer/build.gradle
+ mode change 100644 => 100755 android/ijkplayer/gradle/wrapper/gradle-wrapper.properties
+ mode change 100644 => 100755 android/ijkplayer/ijkplayer-example/build.gradle
+ mode change 100644 => 100755 android/ijkplayer/ijkplayer-exo/build.gradle
+ mode change 100644 => 100755 android/ijkplayer/ijkplayer-java/build.gradle
+
+diff --git a/android/ijkplayer/build.gradle b/android/ijkplayer/build.gradle
+old mode 100644
+new mode 100755
+index abc1270f..f97eee07
+--- a/android/ijkplayer/build.gradle
++++ b/android/ijkplayer/build.gradle
+@@ -2,10 +2,11 @@
+ 
+ buildscript {
+     repositories {
++        google()
+         jcenter()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:2.1.3'
++        classpath 'com.android.tools.build:gradle:7.0.3'
+ 
+         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+@@ -16,6 +17,7 @@ buildscript {
+ 
+ allprojects {
+     repositories {
++        google()
+         jcenter()
+     }
+ }
+@@ -31,5 +33,5 @@ ext {
+ }
+ 
+ wrapper {
+-    gradleVersion = '2.14.1'
++    gradleVersion = '7.0.3'
+ }
+diff --git a/android/ijkplayer/gradle/wrapper/gradle-wrapper.properties b/android/ijkplayer/gradle/wrapper/gradle-wrapper.properties
+old mode 100644
+new mode 100755
+index f47ae666..b52053e0
+--- a/android/ijkplayer/gradle/wrapper/gradle-wrapper.properties
++++ b/android/ijkplayer/gradle/wrapper/gradle-wrapper.properties
+@@ -1,6 +1,6 @@
+-#Wed Aug 24 16:26:25 CST 2016
+-distributionBase=GRADLE_USER_HOME
+-distributionPath=wrapper/dists
+-zipStoreBase=GRADLE_USER_HOME
+-zipStorePath=wrapper/dists
+-distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
++#Thu Jul 28 19:24:24 CST 2022
++distributionBase=GRADLE_USER_HOME
++distributionUrl=https\://services.gradle.org/distributions/gradle-7.0.2-bin.zip
++distributionPath=wrapper/dists
++zipStorePath=wrapper/dists
++zipStoreBase=GRADLE_USER_HOME
+diff --git a/android/ijkplayer/ijkplayer-arm64/build.gradle b/android/ijkplayer/ijkplayer-arm64/build.gradle
+index a8cbe0cb..91b35571 100644
+--- a/android/ijkplayer/ijkplayer-arm64/build.gradle
++++ b/android/ijkplayer/ijkplayer-arm64/build.gradle
+@@ -24,7 +24,7 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
+ }
+ 
+ apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
+diff --git a/android/ijkplayer/ijkplayer-armv5/build.gradle b/android/ijkplayer/ijkplayer-armv5/build.gradle
+index b3b7b3a8..4b336801 100644
+--- a/android/ijkplayer/ijkplayer-armv5/build.gradle
++++ b/android/ijkplayer/ijkplayer-armv5/build.gradle
+@@ -24,7 +24,7 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
+ }
+ 
+ apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
+diff --git a/android/ijkplayer/ijkplayer-armv7a/build.gradle b/android/ijkplayer/ijkplayer-armv7a/build.gradle
+index b3b7b3a8..4b336801 100644
+--- a/android/ijkplayer/ijkplayer-armv7a/build.gradle
++++ b/android/ijkplayer/ijkplayer-armv7a/build.gradle
+@@ -24,7 +24,7 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
+ }
+ 
+ apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
+diff --git a/android/ijkplayer/ijkplayer-example/build.gradle b/android/ijkplayer/ijkplayer-example/build.gradle
+old mode 100644
+new mode 100755
+index ae4a0c65..f0714a7b
+--- a/android/ijkplayer/ijkplayer-example/build.gradle
++++ b/android/ijkplayer/ijkplayer-example/build.gradle
+@@ -12,7 +12,7 @@ android {
+     }
+     defaultConfig {
+         applicationId "tv.danmaku.ijk.media.example"
+-        minSdkVersion 9
++        minSdkVersion 21
+         targetSdkVersion rootProject.ext.targetSdkVersion
+         versionCode rootProject.ext.versionCode
+         versionName rootProject.ext.versionName
+@@ -23,9 +23,16 @@ android {
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+         }
+     }
++    flavorDimensions "platform"
+     productFlavors {
+-        all32 { minSdkVersion 9 }
+-        all64 { minSdkVersion 21 }
++        all32 {
++            dimension "platform"
++            minSdkVersion 21
++        }
++        all64 {
++            dimension "platform"
++            minSdkVersion 21
++        }
+         // armv5 {}
+         // armv7a {}
+         // arm64 { minSdkVersion 21 }
+@@ -34,25 +41,22 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(include: ['*.jar'], dir: 'libs')
+-    compile 'com.android.support:appcompat-v7:23.0.1'
+-    compile 'com.android.support:preference-v7:23.0.1'
+-    compile 'com.android.support:support-annotations:23.0.1'
++    implementation fileTree(include: ['*.jar'], dir: 'libs')
++    implementation 'com.android.support:appcompat-v7:23.0.1'
++    implementation 'com.android.support:preference-v7:23.0.1'
++    implementation 'com.android.support:support-annotations:23.0.1'
+ 
+-    compile 'com.squareup:otto:1.3.8'
++    implementation 'com.squareup:otto:1.3.8'
+ 
+-    compile project(':ijkplayer-java')
+-    compile project(':ijkplayer-exo')
++    implementation project(':ijkplayer-java')
++    implementation project(':ijkplayer-exo')
+ 
+-    all32Compile project(':ijkplayer-armv5')
+-    all32Compile project(':ijkplayer-armv7a')
+-    all32Compile project(':ijkplayer-x86')
++    implementation project(':ijkplayer-armv5')
++    implementation project(':ijkplayer-armv7a')
++    implementation project(':ijkplayer-arm64')
++    implementation project(':ijkplayer-x86')
++    implementation project(':ijkplayer-x86_64')
+ 
+-    all64Compile project(':ijkplayer-armv5')
+-    all64Compile project(':ijkplayer-armv7a')
+-    all64Compile project(':ijkplayer-arm64')
+-    all64Compile project(':ijkplayer-x86')
+-    all64Compile project(':ijkplayer-x86_64')
+ 
+     // compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+     // compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
+diff --git a/android/ijkplayer/ijkplayer-exo/build.gradle b/android/ijkplayer/ijkplayer-exo/build.gradle
+old mode 100644
+new mode 100755
+index b582803a..f6e7a6ca
+--- a/android/ijkplayer/ijkplayer-exo/build.gradle
++++ b/android/ijkplayer/ijkplayer-exo/build.gradle
+@@ -23,11 +23,11 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
+ 
+-    compile 'com.google.android.exoplayer:exoplayer:r1.5.11'
++    implementation 'com.google.android.exoplayer:exoplayer:r1.5.11'
+ 
+-    compile project(':ijkplayer-java')
++    implementation project(':ijkplayer-java')
+     // compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+ }
+ 
+diff --git a/android/ijkplayer/ijkplayer-java/build.gradle b/android/ijkplayer/ijkplayer-java/build.gradle
+old mode 100644
+new mode 100755
+index 30d3ad27..849a5dd5
+--- a/android/ijkplayer/ijkplayer-java/build.gradle
++++ b/android/ijkplayer/ijkplayer-java/build.gradle
+@@ -23,7 +23,7 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
+ }
+ 
+ apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
+diff --git a/android/ijkplayer/ijkplayer-x86/build.gradle b/android/ijkplayer/ijkplayer-x86/build.gradle
+index b3b7b3a8..4b336801 100644
+--- a/android/ijkplayer/ijkplayer-x86/build.gradle
++++ b/android/ijkplayer/ijkplayer-x86/build.gradle
+@@ -24,7 +24,7 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
+ }
+ 
+ apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
+diff --git a/android/ijkplayer/ijkplayer-x86_64/build.gradle b/android/ijkplayer/ijkplayer-x86_64/build.gradle
+index a8cbe0cb..91b35571 100644
+--- a/android/ijkplayer/ijkplayer-x86_64/build.gradle
++++ b/android/ijkplayer/ijkplayer-x86_64/build.gradle
+@@ -24,7 +24,7 @@ android {
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
+ }
+ 
+ apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
+diff --git a/config/module-default.sh b/config/module-default.sh
+index 9f02c4e4..047c677d 100755
+--- a/config/module-default.sh
++++ b/config/module-default.sh
+@@ -23,7 +23,7 @@ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-programs"
+ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-ffmpeg"
+ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-ffplay"
+ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-ffprobe"
+-export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-ffserver"
++#export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-ffserver"
+ 
+ # Documentation options:
+ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-doc"
+@@ -57,7 +57,7 @@ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-network"
+ # Hardware accelerators:
+ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-dxva2"
+ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-vaapi"
+-export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-vda"
++#export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-vda"
+ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-vdpau"
+ 
+ # Individual component options:
+@@ -169,4 +169,14 @@ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=async"
+ # export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-random"
+ # export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-random=LIST"
+ # export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-random=LIST"
+-# export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --random-seed=VALUE"
+\ No newline at end of file
++# export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --random-seed=VALUE"
++
++export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-linux-perf"
++
++# Enable rtsp and https protocol
++export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=rtp"
++export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=tcp"
++export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=rtsp"
++export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=sdp"
++export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=rtp"
++export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-openssl"
+diff --git a/config/module.sh b/config/module.sh
+index 0f16f539..a25d6630 120000
+--- a/config/module.sh
++++ b/config/module.sh
+@@ -1 +1 @@
+-module-lite.sh
+\ No newline at end of file
++module-default.sh
+\ No newline at end of file
+diff --git a/init-android-openssl.sh b/init-android-openssl.sh
+index 19b87262..1a237391 100755
+--- a/init-android-openssl.sh
++++ b/init-android-openssl.sh
+@@ -19,7 +19,7 @@
+ #IJK_OPENSSL_UPSTREAM=https://github.com/openssl/openssl
+ IJK_OPENSSL_UPSTREAM=https://github.com/Bilibili/openssl.git
+ IJK_OPENSSL_FORK=https://github.com/Bilibili/openssl.git
+-IJK_OPENSSL_COMMIT=OpenSSL_1_0_2n
++IJK_OPENSSL_COMMIT=OpenSSL_1_0_2u
+ IJK_OPENSSL_LOCAL_REPO=extra/openssl
+ 
+ set -e
+diff --git a/init-android.sh b/init-android.sh
+index a654e17f..223f844c 100755
+--- a/init-android.sh
++++ b/init-android.sh
+@@ -19,7 +19,7 @@
+ # IJK_FFMPEG_UPSTREAM=git://git.videolan.org/ffmpeg.git
+ IJK_FFMPEG_UPSTREAM=https://github.com/Bilibili/FFmpeg.git
+ IJK_FFMPEG_FORK=https://github.com/Bilibili/FFmpeg.git
+-IJK_FFMPEG_COMMIT=ff3.4--ijk0.8.7--20180103--001
++IJK_FFMPEG_COMMIT=ff4.0--ijk0.8.8--20210426--001
+ IJK_FFMPEG_LOCAL_REPO=extra/ffmpeg
+ 
+ set -e
+-- 
+2.17.1
+
